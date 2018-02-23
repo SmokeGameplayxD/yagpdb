@@ -1,4 +1,4 @@
-{{define "cp_commands"}}
+{{define "cp_commands_general"}}
 
 {{template "cp_head" .}}
 <div class="row">
@@ -42,7 +42,7 @@
     </div>
     <div class="row">
         <!-- The global command settings -->
-        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading clearfix" role="tab" id=".Channel">
                     <div class="pull-right">
@@ -52,54 +52,63 @@
                         <button type="button" class="btn btn-warning btn-sm" onclick="uncheckAll('global-autodelete')">Autodelete none</button>
                     </div>
                     <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_cmd_global" aria-expanded="false" aria-controls="collapse_cmd_global">
-                            Global server-wide settings <small>(click to drop-down)</small>
-                        </a>
+                        Global server-wide settings
                     </h4>
                 </div>
-                <div id="collapse_cmd_global" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{.Channel}}">
-                    <table class="table table-condensed table-hover">
-                        <thead>
-                            <tr>
-                                <th>Command</th>
-                                <th>Enabled</th>
-                                <th>Required Role</th>
-                                <th>Auto delete response and trigger (if any) after 10 seconds</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{$roles := .ActiveGuild.Roles}}
-                            {{range .CommandConfig.Global}}{{if not .Info.HideFromCommandsPage}}
-                            <tr class="{{if .CommandEnabled}}success{{else}}danger{{end}}">
-                                <td>{{.Cmd}}</td>
-                                <td>
-                                    {{if or .Info.Key .Info.CustomEnabled}}
-                                    This command can be toggled on/off on its own page.
-                                    {{else}}
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" class="global-enabled" name="global_enabled_{{.Cmd}}" {{if .CommandEnabled}} checked {{end}}> Enabled
-                                    </label>
-                                    {{end}}
-                                </td>
-                                <td>
-                                    <select class="form-control" name="global_required_role_{{.Cmd}}">
-                                        {{roleOptions $roles nil .RequiredRole "None"}}
-                                    </select>
-                                </td>
-                                <td>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" class="global-autodelete" name="global_autodelete_{{.Cmd}}" {{if .AutoDelete}} checked {{end}}> Auto delete response and trigger
-                                    </label>
-                                </td>
-                            </tr>
-                            {{end}}{{end}}
-                        </tbody>
-                    </table>
-                </div>
+                <table class="table table-condensed table-hover">
+                    <thead>
+                        <tr>
+                            <th>Command</th>
+                            <th>Enabled</th>
+                            <th>Required Role</th>
+                            <th>Auto delete response and trigger (if any) after 10 seconds</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{$roles := .ActiveGuild.Roles}}
+                        {{range .CommandConfig.Global}}{{if not .Info.HideFromCommandsPage}}
+                        <tr class="{{if .CommandEnabled}}success{{else}}danger{{end}}">
+                            <td>{{.Cmd}}</td>
+                            <td>
+                                {{if or .Info.Key .Info.CustomEnabled}}
+                                This command can be toggled on/off on its own page.
+                                {{else}}
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="global-enabled" name="global_enabled_{{.Cmd}}" {{if .CommandEnabled}} checked {{end}}> Enabled
+                                </label>
+                                {{end}}
+                            </td>
+                            <td>
+                                <select class="form-control" name="global_required_role_{{.Cmd}}">
+                                    {{roleOptions $roles nil .RequiredRole "None"}}
+                                </select>
+                            </td>
+                            <td>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="global-autodelete" name="global_autodelete_{{.Cmd}}" {{if .AutoDelete}} checked {{end}}> Auto delete response and trigger
+                                </label>
+                            </td>
+                        </tr>
+                        {{end}}{{end}}
+                    </tbody>
+                </table>
             </div>
         </div>  <!-- /panel-group -->
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Save all command settings</button>   
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->            
+</form>
+{{template "cp_commands_js" .}}
+{{template "cp_footer" .}}
+{{end}}
 
+{{define "cp_commands_overrides"}}
         {{$guild := .ActiveGuild.ID}}
+        {{$roles := .ActiveGuild.Roles}}
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
             {{range .CommandConfig.ChannelOverrides}}
             <div class="panel panel-{{if .OverrideEnabled}}success{{else}}default{{end}}">
@@ -164,7 +173,11 @@
         </div>
     </div>
 </form>
-<!-- /.row -->            
+{{template "cp_footer" .}}
+
+{{end}}
+
+{{define "cp_commands_js"}}
 <script type="text/javascript">
     function checkAll(what){
         console.log("Enabling all", what)
@@ -213,8 +226,4 @@
             $(item).val(copybufRole[i]);
         })
     }
-</script>
-
-{{template "cp_footer" .}}
-
-{{end}}
+</script>{{end}}

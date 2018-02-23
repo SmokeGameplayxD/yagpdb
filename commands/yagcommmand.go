@@ -367,7 +367,7 @@ func (cs *YAGCommand) Enabled(client *redis.Client, channel string, gState *dsta
 		i++
 	}
 
-	config := GetConfig(client, gState.ID(), channels)
+	config := legacyGetConfig(client, gState.ID(), channels)
 
 	// Check overrides first to see if one was enabled, and if so determine if the command is available
 	for _, override := range config.ChannelOverrides {

@@ -21,9 +21,9 @@ func (p *Plugin) InitWeb() {
 	subMux.Use(web.RequireGuildChannelsMiddleware)
 	subMux.Use(web.RequireFullGuildMW)
 
-	subMux.Handle(pat.Get(""), web.RenderHandler(HandleCommands, "cp_commands"))
-	subMux.Handle(pat.Get("/"), web.RenderHandler(HandleCommands, "cp_commands"))
-	subMux.Handle(pat.Post("/"), web.RenderHandler(HandlePostCommands, "cp_commands"))
+	subMux.Handle(pat.Get(""), web.RenderHandler(HandleCommands, "cp_commands_general"))
+	subMux.Handle(pat.Get("/"), web.RenderHandler(HandleCommands, "cp_commands_general"))
+	subMux.Handle(pat.Post("/"), web.RenderHandler(HandlePostCommands, "cp_commands_general"))
 }
 
 // Servers the command page with current config
@@ -31,7 +31,10 @@ func HandleCommands(w http.ResponseWriter, r *http.Request) interface{} {
 	ctx := r.Context()
 	client, activeGuild, templateData := web.GetBaseCPContextData(ctx)
 	channels := ctx.Value(common.ContextKeyGuildChannels).([]*discordgo.Channel)
-	templateData["CommandConfig"] = GetConfig(client, activeGuild.ID, channels)
+	templateData["CommandConfig"] = legacyGetConfig(client, activeGuild.ID, channels)
+
+	// selectedChannel := r.URL.Query().Get("selected_channel")
+
 	return templateData
 }
 
@@ -51,12 +54,12 @@ func HandlePostCommands(w http.ResponseWriter, r *http.Request) interface{} {
 
 	channels := ctx.Value(common.ContextKeyGuildChannels).([]*discordgo.Channel)
 
-	config := GetConfig(client, activeGuild.ID, channels)
+	config := legacyGetConfig(client, activeGuild.ID, channels)
 
 	// Update all the overrides
 	for _, channel := range channels {
 		// Find the override
-		var override *ChannelOverride
+		var override *legacyChannelOverride
 		for _, r := range config.ChannelOverrides {
 			if r.Channel == channel.ID {
 				override = r
@@ -97,7 +100,7 @@ func HandlePostCommands(w http.ResponseWriter, r *http.Request) interface{} {
 	user := ctx.Value(common.ContextKeyUser).(*discordgo.User)
 	go common.AddCPLogEntry(user, activeGuild.ID, "Updated command settings")
 
-	templateData["CommandConfig"] = GetConfig(client, activeGuild.ID, channels)
+	templateData["CommandConfig"] = legacyGetConfig(client, activeGuild.ID, channels)
 
 	return templateData
 }
