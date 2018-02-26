@@ -21,9 +21,9 @@ func (p *Plugin) InitWeb() {
 	subMux.Use(web.RequireGuildChannelsMiddleware)
 	subMux.Use(web.RequireFullGuildMW)
 
-	subMux.Handle(pat.Get(""), web.RenderHandler(HandleCommands, "cp_commands_general"))
-	subMux.Handle(pat.Get("/"), web.RenderHandler(HandleCommands, "cp_commands_general"))
-	subMux.Handle(pat.Post("/"), web.RenderHandler(HandlePostCommands, "cp_commands_general"))
+	subMux.Handle(pat.Get(""), web.ControllerHandler(HandleCommands, "cp_commands_general"))
+	subMux.Handle(pat.Get("/"), web.ControllerHandler(HandleCommands, "cp_commands_general"))
+	subMux.Handle(pat.Post("/"), web.ControllerPostHandler(HandlePostCommands, "cp_commands_general"), "updated general command settings")
 }
 
 // Servers the command page with current config

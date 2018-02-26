@@ -193,7 +193,7 @@ var _escData = map[string]*_escFile{
 	"/assets/commands.html": {
 		local:   "assets/commands.html",
 		size:    10828,
-		modtime: 1519346335,
+		modtime: 1519513151,
 		compressed: `
 H4sIAAAAAAAC/9xaX2/cuBF/96dglQC3xt1KTXHoQ6NdwLXbNCiQCy73UhwOBlcaSUy4pEpS6xiCvvuB
 fySt/q5srx0gfrBXGpIznBn+OPPzlmUMCWGAvCi/jfh+j1ksb1NgIDD1qurioiwV7HOKlR2TAY495FfV
@@ -234,7 +234,7 @@ dIjedsFEgCoEO7Ln4kxR7p2NftCfJ8rjStugnzvKx0HtRnwsxGFgkXPrwPfPAAAA//9mouqeTCoAAA==
 	"/assets/help-page.md": {
 		local:   "assets/help-page.md",
 		size:    4653,
-		modtime: 1518359152,
+		modtime: 1519494558,
 		compressed: `
 H4sIAAAAAAAC/8xX3W/cNhJ/118xhzxkjW7kJEUOBwMHw7XboLjrB5wURt9MUSOJWYqjcqjd7GH/+MOQ
 +trNxr5DXxrAWYma+Q35m0++ePEC3qNDr+xVdkttq1wJB7ixRjEyHOCXLhhyysKNr+X9Dll7ExezV+kf
@@ -264,6 +264,20 @@ i+Ra/dEjH5fNB8MltXnG1LuyIOUlfLmYVeKHkcRfrdpPd4mFSnzkPHug/nfq76dSvfcTUKn8Bkb7fC3k
 UYsx/H/+8MNDIuIqFp7OozCBZUq+t6AbMloSW5VlpOOloL0E5es+0iXJfWwgtb47LPr6fN/7P/patle1
 XGp70Zseku9/v3n/6913L3lYn+o9N4lKPT4MobK4dqQv8cow3KeHWpKCqMKgE40ttvHlPEraz3BBHqJ5
 0E2XxbKoF3NI0deg+kDxfqCYTe2Ewjz7bwAAAP//ZaJUcS0SAAA=
+`,
+	},
+
+	"/assets/schema.sql": {
+		local:   "assets/schema.sql",
+		size:    856,
+		modtime: 1519517135,
+		compressed: `
+H4sIAAAAAAAC/5SR0W6qQBCGr9mn2EtNfAOvPKfbhNRiozTRNM1kYaY4ybIbd7Xt4zcopKBg6C3/z8zs
+9/1fq0WqZLr4t1QyfpTJKpVqG2/SjcxdWWqLAfK9tpZMAPdJ3jNSkBMRMcqMi0CetZEv6/h5sd7JJ7Wb
+iag4sUG4FNgez0OT1+VyJqJ6FjCGOn17b+ccoDAu00ZmzplWIqJmO5DVmSG8bkT7KsxLBORwbkAZits5
+ng7gnSGw9FXV+w+pZ7RKV9v06eiQDB2HOmI6F6LmGycPajueLxSM33KV3OtMGsqtNeM0VojGquy57der
+pw/yZHMKdw9lnHYEDPmriMIF6U3m6XBiT3g212Ps77A7FJrPnWcOGOj8OOkFNJ3/BAAA//8O2XY/WAMA
+AA==
 `,
 	},
 
