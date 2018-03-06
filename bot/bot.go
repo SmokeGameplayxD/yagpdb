@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"encoding/json"
 	log "github.com/Sirupsen/logrus"
 	"github.com/jonas747/discordgo"
 	"github.com/jonas747/dshardmanager"
@@ -214,4 +215,78 @@ func GuildCountsFunc() []int {
 	State.RUnlock()
 
 	return result
+}
+
+func WriteState() error {
+	started := time.Now()
+	err := os.MkdirAll("state", 0755)
+	if err != nil {
+		return err
+	}
+
+	workChan := make(chan *dstate.GuildState)
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		State.RLock()
+		wg.Add(len(State.Guilds))
+		wg.Done()
+		for _, v := range State.Guilds {
+			workChan <- v
+		}
+		State.RUnlock()
+	}()
+
+	for i := 0; i < 100; i++ {
+		go writerWorker(workChan, &wg)
+	}
+
+	wg.Wait()
+	close(workChan)
+
+	log.Info("Done writing all in: ", time.Since(started))
+	return nil
+}
+
+func writerWorker(workChan chan *dstate.GuildState, wg *sync.WaitGroup) {
+	for {
+		gs := <-workChan
+		if gs == nil {
+			return
+		}
+
+		err := WriteGS(gs)
+		if err != nil {
+			State.RUnlock()
+			panic(err)
+		}
+
+		wg.Done()
+	}
+}
+
+func WriteGS(gs *dstate.GuildState) error {
+	started := time.Now()
+	gs.Lock()
+	encoded, err := json.Marshal(gs)
+	if err != nil {
+		gs.Unlock()
+		return err
+	}
+	gs.Unlock()
+
+	f, err := os.Create("state/" + gs.ID() + ".json")
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	n, err := f.Write(encoded)
+	if err != nil {
+		return err
+	}
+
+	log.Info("Wrote ", n, " bytes in ", time.Since(started).String())
+
+	return nil
 }
