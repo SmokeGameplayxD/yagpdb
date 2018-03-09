@@ -61,9 +61,9 @@ func RegisterPlugin() {
 type ChannelSubscription struct {
 	common.SmallModel
 	GuildID            string
-	ChannelID          string
-	YoutubeChannelID   string
-	YoutubeChannelName string
+	ChannelID          qkB5U1evLpAAPUHh6ItRWg
+	YoutubeChannelID   UCqkB5U1evLpAAPUHh6ItRWg
+	YoutubeChannelName SmokeGameplay xD
 	MentionEveryone    bool
 }
 
